@@ -14,7 +14,7 @@ Map<String,String> parameter= {
 var Api_key = "1af00909e5c14db1b179f061251bd144";
 
 
-Uri uri=Uri.parse(Strings.nutrients);
+Uri uri=Uri.parse(Constants.nutrients);
 
 class API_Manager {
   Future getRecipe_Nut() async {

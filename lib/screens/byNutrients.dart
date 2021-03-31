@@ -1,6 +1,9 @@
+import 'package:dieto/screens/RecipePage.dart';
 import 'package:dieto/services/apimanager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class RecipebyNutrients extends StatefulWidget {
   @override
@@ -9,90 +12,109 @@ class RecipebyNutrients extends StatefulWidget {
 
 class _RecipebyNutrientsState extends State<RecipebyNutrients> {
 
+
   Future _nut;
 
-//  @override
-//  void initState() {
-//    _nut=API_Manager().getRecipe_Nut();
-//    super.initState();
-//  }
+
+  GetRecipe(BuildContext context){
+    _nut=API_Manager().getRecipe_Nut(context);
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    _nut=API_Manager().getRecipe_Nut();
+    GetRecipe(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.lightBlueAccent,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: Colors.lightBlueAccent,
         title: Text('Your Recipes',
         style: TextStyle(
-          color: Colors.indigo
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),),
       ),
 
-      body: Container(
-        child: FutureBuilder(
+      body:
+//      Padding(
+//        padding: const EdgeInsets.fromLTRB(0,100, 0,0),
+//        child:
+        FutureBuilder(
             future: _nut,
             builder: (context,snapshot) {
               if(snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: 4,
+                return Swiper(
+                  itemHeight: MediaQuery.of(context).size.height,
+                  itemWidth: MediaQuery.of(context).size.width,
+                  layout: SwiperLayout.TINDER ,
+                  pagination: new SwiperPagination(),
+                  //control: new SwiperControl(),
+                  itemCount: 10,
                   itemBuilder: (context, index) {
 
                     var object=snapshot.data[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                    return Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: InkWell(
+                            onTap: (){
+                              print(object['id'].toString());
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RecipePage(object['id'].toString(),object['title'],object['image'])));
+                            },
                             child: Card(
-                              child: Column(
-                                children: [
-                                  Image.network(object['image']),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(object['title'],
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Values(object: object,name: "Carbs : ",value: "carbs",),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Values(object: object,name: "Fat : ",value: "fat",),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Values(object: object,name: "Protein : ",value: "protein",),
+                              child: Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Column(
+                                  children: [
+                                    Image.network(object['image']),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(object['title'],
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Values(object: object,name: "Carbs : ",value: "carbs",),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Values(object: object,name: "Fat : ",value: "fat",),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Values(object: object,name: "Protein : ",value: "protein",),
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
+                          ),
                     ),
-                          SizedBox(
-                            height: 20,
-                          )
-                        ],
-                      ),
+//                            SizedBox(
+//                              height: 20,
+//                            )
+                      ],
                     );
                   },
                 );
               }
               else{
-                return Center(child: CircularProgressIndicator());
+                return  SpinKitChasingDots(
+                  color: Colors.white,
+                  size: 80.0,
+                );
+
               }
             }
         ),
-      ),
 
     );
   }

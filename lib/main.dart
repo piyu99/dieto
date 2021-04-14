@@ -1,3 +1,6 @@
+import 'package:dieto/strings/theme.dart';
+import 'package:get/get.dart';
+
 import 'strings/constants.dart';
 import 'package:dieto/screens/Slider.dart';
 import 'package:dieto/screens/byNutrients.dart';
@@ -24,14 +27,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return
-//      ChangeNotifierProvider<Constants>(
-//      create: (context){
-//        return Constants();
-//      },
-//      child:
-      MaterialApp(
-        home: SliderScreen()
-      );
-  //  );
+      ChangeNotifierProvider<Constants>(
+      create: (context){
+        return Constants();
+      },
+      child:
+      GetMaterialApp(
+        home: SliderScreen(),
+        debugShowCheckedModeBanner: false,
+        theme: Themes().lightTheme,
+        darkTheme: Themes().darkTheme,
+      )
+    );
   }
 }

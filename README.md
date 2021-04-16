@@ -1,6 +1,10 @@
 # dieto
 
-A new Flutter application.
+Say hello to my New App "Dieto".
+
+Dieto lets you search for tasty and healthy recipes with the right amount of nutrients and calories in it.
+
+You just have to select your Carbs Range and Dieto will pick out Detailed recipes of the healthiest dishes.
 
 ## Getting Started
 
